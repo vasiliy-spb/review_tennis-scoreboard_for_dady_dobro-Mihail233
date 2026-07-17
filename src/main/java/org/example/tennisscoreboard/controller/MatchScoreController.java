@@ -2,7 +2,7 @@ package org.example.tennisscoreboard.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.tennisscoreboard.domain.service.applicationservice.MatchApplicationService;
+import org.example.tennisscoreboard.application.MatchApplicationService;
 import org.example.tennisscoreboard.dto.PointAwardingRequest;
 import org.example.tennisscoreboard.dto.TennisMatchResponse;
 import org.example.tennisscoreboard.util.ValidationUtil;
@@ -24,6 +24,7 @@ public class MatchScoreController {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException(ValidationUtil.getErrorMessage(bindingResult));
         }
+
         TennisMatchResponse tennisMatchResponse = matchApplicationService.awardPointAndGetGeneralScore(uuid, pointAwardingRequest);
         return new ResponseEntity<>(tennisMatchResponse, HttpStatus.OK);
     }

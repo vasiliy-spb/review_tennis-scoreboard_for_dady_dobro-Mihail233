@@ -1,20 +1,20 @@
 package org.example.tennisscoreboard.common.dao;
 
-import org.example.tennisscoreboard.common.functionalinterface.FinderBy;
-import org.example.tennisscoreboard.common.functionalinterface.Inserter;
+import lombok.RequiredArgsConstructor;
+import org.example.tennisscoreboard.common.dao.functional.FinderBy;
+import org.example.tennisscoreboard.common.dao.functional.Inserter;
+import org.example.tennisscoreboard.handler.ErrorMapper;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+@RequiredArgsConstructor
 public abstract class BaseDAO<E> {
+
     protected final SessionFactory sessionFactory;
+    protected final ErrorMapper errorMapper;
 
-    public BaseDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-
-    protected void insertData(Inserter inserter) {
+    protected void executeInserter(Inserter inserter) {
 
         try (Session session = sessionFactory.openSession()) {
 
@@ -25,13 +25,12 @@ public abstract class BaseDAO<E> {
                 if (transaction != null) {
                     transaction.rollback();
                 }
-//                throw new TestException("test3");
-                //кинуть ошибку здесь, которую словили(она должна быть runtime)
+                throw e;
             }
         }
     }
 
-    protected E findData(FinderBy<E> finderBy) {
+    protected E executeFinderBy(FinderBy<E> finderBy) {
         try (Session session = sessionFactory.openSession()) {
 
             try {
@@ -42,8 +41,7 @@ public abstract class BaseDAO<E> {
                 if (transaction != null) {
                     transaction.rollback();
                 }
-                throw new RuntimeException("test");
-                //кинуть ошибку здесь, которую словили(она должна быть runtime)
+                throw e;
             }
         }
     }

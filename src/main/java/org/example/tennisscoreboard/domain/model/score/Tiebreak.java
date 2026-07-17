@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class Tiebreak {
     private static int INITIAL_TIEBREAK_POINTS = 0;
-
+    private static int MIN_POINTS = 0;
     @Getter
     private int points;
 
@@ -24,6 +24,13 @@ public class Tiebreak {
     }
 
     protected static Tiebreak createSpecificTiebreak(int points) {
+        validateTiebreak(points);
         return new Tiebreak(points);
+    }
+
+    private static void validateTiebreak(int points) {
+        if (points < MIN_POINTS) {
+            throw new IllegalArgumentException("Invalid tiebreak points");
+        }
     }
 }

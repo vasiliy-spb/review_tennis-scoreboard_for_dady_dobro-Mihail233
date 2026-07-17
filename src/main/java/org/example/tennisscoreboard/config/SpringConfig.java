@@ -1,6 +1,6 @@
 package org.example.tennisscoreboard.config;
 
-import org.example.tennisscoreboard.domain.service.domainservice.OngoingMatchesDomainService;
+import org.example.tennisscoreboard.domain.service.OngoingMatchesDomainService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

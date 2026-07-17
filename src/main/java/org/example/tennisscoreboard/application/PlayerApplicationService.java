@@ -1,4 +1,4 @@
-package org.example.tennisscoreboard.domain.service.applicationservice;
+package org.example.tennisscoreboard.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.tennisscoreboard.common.dao.DAO;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlayerApplicationService {
 
-    private final DAO<Player, Player> h2PlayerDAO;
+    private final DAO<Player, Player> dao;
 
     //если 2 пользователя исп app параллельно,
     //у первого при select будет null, второй пользователь вставит в этот момент player,
@@ -22,11 +22,11 @@ public class PlayerApplicationService {
         Player firstPlayer = new Player(firstPlayerName);
         Player secondPlayer = new Player(secondPlayerName);
 
-        h2PlayerDAO.insert(firstPlayer);
-        h2PlayerDAO.insert(secondPlayer);
+        dao.insert(firstPlayer);
+        dao.insert(secondPlayer);
 
-        firstPlayer = h2PlayerDAO.find(firstPlayerName);
-        secondPlayer = h2PlayerDAO.find(secondPlayerName);
+        firstPlayer = dao.find(firstPlayerName);
+        secondPlayer = dao.find(secondPlayerName);
 
         Participant firstParticipant = Participant.createParticipant(firstPlayer.getId(), firstPlayer.getName());
         Participant secondParticipant = Participant.createParticipant(secondPlayer.getId(), secondPlayer.getName());

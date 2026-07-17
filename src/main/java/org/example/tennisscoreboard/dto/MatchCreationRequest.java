@@ -1,19 +1,18 @@
 package org.example.tennisscoreboard.dto;
 
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record MatchCreationRequest(
 
-        @NotBlank(message = "First player name cannot be empty")
-        @Size(max = 20, message = "First player name is too long")
-        @Size(min = 5, message = "First player name is too small" )
+        @NotBlank(message = "Имя первого игрока не может быть пустым")
+        @Size(min = 5, max = 20, message = "Имя игрока должно быть от 5 до 20 символов")
         String firstPlayerName,
 
 
-        @NotBlank(message = "Second player name cannot be empty")
-        @Size(max = 20, message = "Second player name is too long")
-        @Size(min = 5, message = "Second player name is too small" )
+        @NotBlank(message = "Имя второго игрока не может быть пустым")
+        @Size(min = 5, max = 20, message = "Имя игрока должно быть от 5 до 20 символов")
         String secondPlayerName
 ) {
 }

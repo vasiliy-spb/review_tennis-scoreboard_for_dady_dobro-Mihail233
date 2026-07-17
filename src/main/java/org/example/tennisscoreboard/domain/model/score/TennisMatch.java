@@ -57,6 +57,7 @@ public class TennisMatch {
         if (firstParticipantName.equals(winnerName)) {
             generalScore.awardPointFirstParticipant();
         } else {
+            //даже если имя неправильное награжет 2
             generalScore.awardPointSecondParticipant();
         }
     }

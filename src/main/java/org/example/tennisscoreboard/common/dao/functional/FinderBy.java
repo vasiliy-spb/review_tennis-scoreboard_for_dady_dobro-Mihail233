@@ -1,4 +1,4 @@
-package org.example.tennisscoreboard.common.functionalinterface;
+package org.example.tennisscoreboard.common.dao.functional;
 
 import org.hibernate.Session;
 

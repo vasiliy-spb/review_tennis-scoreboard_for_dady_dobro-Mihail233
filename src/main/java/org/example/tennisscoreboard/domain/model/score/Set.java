@@ -3,6 +3,8 @@ package org.example.tennisscoreboard.domain.model.score;
 import lombok.Getter;
 
 public class Set {
+    private static int MIN_SETS = 0;
+    private static int MAX_SETS = 2;
     private static int INITIAL_SETS = 0;
 
     @Getter
@@ -23,6 +25,13 @@ public class Set {
     }
 
     protected static Set createSpecificSet(int sets) {
+        validateSet(sets);
         return new Set(sets);
+    }
+
+    private static void validateSet(int sets) {
+        if (sets < MIN_SETS || sets > MAX_SETS) {
+            throw new IllegalArgumentException("Invalid sets");
+        }
     }
 }

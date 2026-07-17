@@ -2,7 +2,7 @@ package org.example.tennisscoreboard.domain.model.score;
 
 import lombok.Getter;
 
-import static org.example.tennisscoreboard.domain.model.score.Score.*;
+import static org.example.tennisscoreboard.domain.model.score.Point.*;
 
 public class GeneralScore {
     //название поля поменять под функцию проверки что сейчас тайбрейк
@@ -30,8 +30,8 @@ public class GeneralScore {
 
     protected static GeneralScore createSpecificGeneralScore(int firstPlayerPoints, int secondPlayerPoints, int firstPlayerGames, int secondPlayerGames,
                                                              int firstPlayerSets, int secondPlayerSets, int firstPlayerTiebreakPoints, int secondPlayerTiebreakPoints) {
-        return new GeneralScore(Score.createSpecificScore(firstPlayerPoints, firstPlayerGames, firstPlayerSets, firstPlayerTiebreakPoints),
-                Score.createSpecificScore(secondPlayerPoints, secondPlayerGames, secondPlayerSets, secondPlayerTiebreakPoints));
+        return new GeneralScore(Score.createSpecificScoreWithTiebreak(firstPlayerPoints, firstPlayerGames, firstPlayerSets, firstPlayerTiebreakPoints),
+                Score.createSpecificScoreWithTiebreak(secondPlayerPoints, secondPlayerGames, secondPlayerSets, secondPlayerTiebreakPoints));
     }
 
     protected void awardPointFirstParticipant() {

@@ -1,8 +1,12 @@
 package org.example.tennisscoreboard.domain.model.score;
 
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 
 public class Game {
+    private static int MIN_GAMES = 0;
+    private static int MAX_GAMES = 7;
+
     private static int INITIAL_GAMES = 0;
 
     @Getter
@@ -18,8 +22,8 @@ public class Game {
         games++;
     }
 
-    protected void setGames(int games) {
-        this.games = games;
+    protected void resetGames() {
+        this.games = MIN_GAMES;
     }
 
     protected static Game createGame() {
@@ -27,6 +31,13 @@ public class Game {
     }
 
     protected static Game createSpecificGame(int games) {
+        validateGames(games);
         return new Game(games);
+    }
+
+    protected static void validateGames(int games) {
+        if (games > MAX_GAMES || games < MIN_GAMES) {
+            throw new IllegalArgumentException("Invalid games");
+        }
     }
 }

@@ -1,14 +1,13 @@
-package org.example.tennisscoreboard.domain.service.applicationservice;
+package org.example.tennisscoreboard.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.tennisscoreboard.domain.model.Participants;
 import org.example.tennisscoreboard.domain.model.score.TennisMatch;
-import org.example.tennisscoreboard.domain.service.domainservice.OngoingMatchesDomainService;
-import org.example.tennisscoreboard.dto.MatchCreationRequest;
-import org.example.tennisscoreboard.dto.PointAwardingRequest;
-import org.example.tennisscoreboard.dto.RegisteredMatchDTO;
-import org.example.tennisscoreboard.dto.TennisMatchResponse;
-import org.example.tennisscoreboard.mapper.model.TennisMatchMapper;
+import org.example.tennisscoreboard.domain.service.OngoingMatchesDomainService;
+import org.example.tennisscoreboard.dto.*;
+import org.example.tennisscoreboard.mapper.TennisMatchMapper;
+import org.example.tennisscoreboard.service.FinishedMatchesFindingService;
+import org.example.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -16,15 +15,17 @@ import org.springframework.stereotype.Service;
 public class MatchApplicationService {
     private final PlayerApplicationService playerApplicationService;
     private final OngoingMatchesDomainService ongoingMatchesDomainService;
+    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService;
+    private final FinishedMatchesFindingService finishedMatchesFindingService;
 
     private final TennisMatchMapper tennisMatchMapper;
 
-    public RegisteredMatchDTO createNewMatch(MatchCreationRequest matchCreationRequest) {
+    public RegisteredMatchResponse createNewMatch(MatchCreationRequest matchCreationRequest) {
         Participants participants = playerApplicationService.findParticipants(matchCreationRequest.firstPlayerName(), matchCreationRequest.secondPlayerName());
         TennisMatch tennisMatch = TennisMatch.createMatch(participants);
 
         ongoingMatchesDomainService.addNewMatch(tennisMatch);
-        return new RegisteredMatchDTO(tennisMatch.getUuid());
+        return new RegisteredMatchResponse(tennisMatch.getUuid());
     }
 
     public TennisMatchResponse getGeneralScore(String uuid) {
@@ -38,6 +39,17 @@ public class MatchApplicationService {
         String winnerName = pointAwardingRequest.name();
         tennisMatch.awardPoint(winnerName);
 
+        ongoingMatchesDomainService.deleteFinishedMatch(uuid);
+        finishedMatchesPersistenceService.addFinishedMatch(tennisMatch);
+
         return tennisMatchMapper.toDTO(tennisMatch);
+    }
+
+    public FinishedMatchesResponse getFinishedMatches(String pageFromUser, String playerName) {
+        if (playerName == null) {
+            return finishedMatchesFindingService.findAllFinishedMatches(pageFromUser);
+        } else {
+            return finishedMatchesFindingService.findAllFinishedMatchesCertainPlayer(playerName, pageFromUser);
+        }
     }
 }
