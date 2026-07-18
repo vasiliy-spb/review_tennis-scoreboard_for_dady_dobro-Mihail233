@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <title>Tennis ScoreBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="module" src="build/newMatch.js" defer></script>
+</head>
+
+<body style="background-color:#000000;">
+
+</body>
+<main>
+    <section class="navHeader toxicText">
+        <span class="logoText">TENNISSCOREBOARD</span>
+        <div>
+            <nav class="navLinks">
+                <a class="navLink toxicText" href="index.html">HOME</a>
+                <a class="navLink toxicText" href="#">MATCHES</a>
+            </nav>
+        </div>
+    </section>
+    <div class="main centered">
+        <div class="newMatch toxicText">
+            <div class="newMatchTitle centered">
+                <h1>NEW MATCH</h1>
+            </div>
+            <div class="newMatchBody">
+                <form id="newMatchRegistrationForm">
+                    <div class="centered">
+                        <label for="firstPlayer">Player1 name</label>
+                        <input type="text" id="firstPlayer" name="firstPlayerName"
+                            class="interactionFormElement toxicText" required>
+                    </div>
+                    <div class="centered">
+                        <label for="secondPlayer">Player2 name</label>
+                        <input type="text" id="secondPlayer" name="secondPlayerName"
+                            class="interactionFormElement toxicText" required>
+                    </div>
+                    <div class="centered errorText" id="error">
+                    </div>
+                    <div class="centered">
+                        <button type="submit" class="interactionFormElement toxicText">START</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+</html>

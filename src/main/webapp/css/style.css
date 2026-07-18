@@ -1,0 +1,283 @@
+:root {
+    --box-shadow: 0 0 6px rgba(0, 255, 65, 0.45),
+        0 0 12px rgba(0, 255, 65, 0.25);
+    --border: 0.5px solid #00FF41;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    /* Обнуление внешних отступов */
+    padding: 0;
+    /* Обнуление внутренних отступов */
+    border: none;
+    /* Обнуление границ */
+    box-sizing: border-box;
+    /* Включение padding/border в размер элемента */
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+.toxicText {
+    letter-spacing: 1px;
+    color: #8BFF9F;
+}
+
+.errorText {
+    font-size: 11px;
+
+    letter-spacing: 1px;
+    color: #ff3b30;
+    text-shadow:
+        0 0 4px #ff3b30,
+        0 0 8px #ff0000,
+        0 0 12px #990000;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    /* Horizontal centering */
+    align-items: center;
+    /* Vertical centering */
+}
+
+.navHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 35px;
+    border-bottom: 1px solid #00FF41;
+    position: relative;
+
+    font-size: 11px;
+}
+
+.logoText {
+    margin-left: 15px;
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+}
+
+.navLink {
+    margin-left: 12px;
+    text-decoration: none;
+}
+
+.main {
+    height: 100vh;
+}
+
+.newMatch {
+    width: 45%;
+    height: 35%;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+
+.newMatchTitle {
+    /* это высота header*/
+    height: 40%;
+}
+
+.newMatchBody {
+    /*остаток от header*/
+    height: 60%;
+}
+
+.interactionFormElement {
+    width: 40%;
+    padding: 4px 12px;
+    margin: 5px;
+
+    background-color: #000;
+    outline: none;
+
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+
+    transition: 0.2s ease;
+    border: var(--border);
+}
+
+.interactionFormElement:focus {
+    box-shadow: var(--box-shadow);
+}
+
+
+.currentMatch {
+    width: 55%;
+    height: 40%;
+    /* box-shadow: var(--box-shadow) */
+}
+
+.currentMatchHeader {
+    height: 40%;
+}
+
+.score {
+    width: 70%;
+    height: 50%;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+}
+
+.table {
+    width: 100%;
+    padding: 4px;
+}
+
+td {
+    padding: 10px;
+}
+
+.table-text {
+    text-align: center;
+}
+
+.player {
+    padding-left: 0px;
+    text-align: left;
+}
+
+.scoreButton {
+    width: 70%;
+    padding: 3px;
+
+    background-color: #000;
+    outline: none;
+
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+
+    transition: 0.2s ease;
+    cursor: pointer;
+    border: var(--border);
+}
+
+
+#winner {
+    color: #F7FF65;
+
+    font-size: 1.3em;
+    letter-spacing: 2px;
+
+    margin-top: 10px;
+
+    text-shadow:
+        0 0 3px #F7FF65,
+        0 0 6px rgba(247, 255, 101, 0.9),
+        0 0 12px rgba(210, 255, 0, 0.55);
+}
+
+.homePageMenu {
+    display: flex;
+}
+
+.homePageTitle {
+    margin: 10px;
+}
+
+.homepageButton {
+
+    width: 50%;
+    margin: 10px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+}
+
+.mainForSearch {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* располагаем элементы друг под другом */
+    height: 40vh;
+}
+
+.search {
+    display: flex;
+    height: 15%;
+    margin-top: 50px;
+    margin-bottom: 40px;
+}
+
+.searchBlock {
+    padding: 4px 20px;
+    margin: 0px 15px;
+    background-color: #000;
+    outline: none;
+
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+
+    transition: 0.2s ease;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+}
+
+#searchString {
+    height: 100%;
+    width: 30vw;
+}
+
+#searchButton,
+#searchClear {
+    cursor: pointer;
+}
+
+#searchResult {
+    width: 40%;
+}
+
+#searchResult section {
+    box-shadow: var(--box-shadow);
+}
+
+#matchTable {
+    border: var(--border);
+}
+
+
+#prevButton,
+#nextButton {
+
+    width: 15%;
+    margin: 10px;
+    padding: 4px 12px;
+
+    background-color: #000;
+    outline: none;
+
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+
+    transition: 0.2s ease;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+}
+
+#pageNumber {
+    visibility: visible;
+}

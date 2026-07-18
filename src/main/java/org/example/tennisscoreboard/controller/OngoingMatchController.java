@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/api")
 public class OngoingMatchController {
     private final MatchApplicationService matchApplicationService;
 

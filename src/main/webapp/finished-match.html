@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <title>Tennis ScoreBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="module" src="build/finishedMatch.js" defer></script>
+</head>
+    <body style="background-color:#000000;">
+</body>
+
+<main>
+    <section class="navHeader toxicText">
+        <span class="logoText">TENNISSCOREBOARD</span>
+        <div>
+            <nav class="navLinks">
+                <a class="navLink toxicText" href="index.html">HOME</a>
+                <a class="navLink toxicText" href="#">MATCHES</a>
+            </nav>
+        </div>
+    </section>
+    <div class="mainForSearch">
+        <div class="search toxicText">
+            <form id="searchForm">
+                <input type="text" id="searchString" class="searchBlock toxicText" type="text" name="searchStringName">
+            </form>
+            <button type="submit" id="searchButton" class="searchBlock toxicText">SEARCH</button>
+            <p id="searchClear" class="searchBlock toxicText centered">CLEAR</p>
+        </div>
+        <div id="searchResult">
+        </div>
+
+    </div>
+</main>
+
+</html>

@@ -1,6 +1,6 @@
 package org.example.tennisscoreboard.dto;
 
-public record TennisMatchResponse(
+public record TennisMatchResponse (
         String firstPlayerName,
         String secondPlayerName,
         String firstPlayerPoints,

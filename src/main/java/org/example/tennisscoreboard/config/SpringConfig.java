@@ -4,15 +4,22 @@ import org.example.tennisscoreboard.domain.service.OngoingMatchesDomainService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.example.tennisscoreboard")
-public class SpringConfig {
+public class SpringConfig implements WebMvcConfigurer {
 
     @Bean
     OngoingMatchesDomainService createOngoingMatchesDomainService() {
         return new OngoingMatchesDomainService();
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 }
