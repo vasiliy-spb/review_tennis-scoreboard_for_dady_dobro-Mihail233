@@ -1,48 +1,42 @@
-import * as types from "./types";
-import { TennisMatchResponse } from "./types";
+import * as types from "./types.js";
 import * as httpStatusCodes from "./httpStatusCodes.js";
 
-if (typeof window !== "undefined") {
+const startMatch = async () => {
+        let uuid = getParameterFromURL('uuid');
+        let result: Response = await sendRequestToGetGeneralScore(uuid);
 
-        const startMatch = async () => {
-                let uuid = getParameterFromURL('uuid');
-                let result: Response = await sendRequestToGetGeneralScore(uuid);
+        if (httpStatusCodes.isSuccessfulRequest(result)) {
+                const tennisMatchResponse: types.TennisMatchResponse = await result.json();
 
-                const status: number = result.status;
-                const successStatus = Object.values(httpStatusCodes.SuccessStatus);
-                const container = document.getElementById('container') as HTMLElement;
+                const firstPlayerName: string = tennisMatchResponse.firstPlayerName;
+                const secondPlayerName: string = tennisMatchResponse.secondPlayerName;
 
-                if (successStatus.includes(status)) {
-
-                        const tennisMatchResponse: types.TennisMatchResponse = await result.json();
-
-                        const firstPlayerName: string = tennisMatchResponse.firstPlayerName;
-                        const secondPlayerName: string = tennisMatchResponse.secondPlayerName;
-
-                        container.innerHTML = renderInitialScore(tennisMatchResponse);
-                        setEventListenersOnButtons(uuid, firstPlayerName, secondPlayerName);
-                } else {
-                        const exceptionResponse: types.ExceptionResponse = await result.json();
-                        container.innerHTML = renderInitialError(exceptionResponse.message);
-                }
-
+                renderInitialScore(tennisMatchResponse);
+                setEventListenersOnButtons(uuid, firstPlayerName, secondPlayerName);
+        } else {
+                const exceptionResponse: types.ExceptionResponse = await result.json();
+                renderInitialError(exceptionResponse.message);
         }
 
-        const getParameterFromURL = (parameter: string): string => {
-                let parameters = new URLSearchParams(document.location.search);
-                return parameters.get(parameter) as string;
-        }
+}
 
-        const sendRequestToGetGeneralScore = async (uuid: string): Promise<Response> => {
-                return fetch(`api/matches/${uuid}`, {
-                        method: 'GET'
-                });
-        }
+const getParameterFromURL = (parameter: string): string => {
+        let parameters = new URLSearchParams(document.location.search);
+        return parameters.get(parameter) as string;
+}
 
-        const renderInitialScore = (tennisMatchResponse: TennisMatchResponse) => {
-                const matchViewModel: types.MatchViewModel = toMatchViewModel(tennisMatchResponse);
+const sendRequestToGetGeneralScore = async (uuid: string): Promise<Response> => {
+        return fetch(`api/matches/${uuid}`, {
+                method: 'GET'
+        });
+}
 
-                return ` <div class="currentMatchHeader centered">
+const renderInitialScore = (tennisMatchResponse: types.TennisMatchResponse) => {
+        const container = document.getElementById('container') as HTMLElement;
+
+        const matchViewModel: types.MatchViewModel = toMatchViewModel(tennisMatchResponse);
+
+        const initialScoreHTML = ` <div class="currentMatchHeader centered">
                                 <h1>CURRENT MATCH</h1>
                         </div>
                         <div class="centered">
@@ -82,116 +76,108 @@ if (typeof window !== "undefined") {
                         <div class="centered" id="winner">
                         </div>
                         `
-        }
+        container.innerHTML = initialScoreHTML;
+}
 
-        const toMatchViewModel = (
-                tennisMatchResponse: TennisMatchResponse
-            ): types.MatchViewModel => {
-                return {
-                    firstPlayerName: tennisMatchResponse.firstPlayerName,
-                    secondPlayerName: tennisMatchResponse.secondPlayerName,
-            
-                    firstPlayerPoints: tennisMatchResponse.firstPlayerTieBreakPoints == null ? tennisMatchResponse.firstPlayerPoints : tennisMatchResponse.firstPlayerTieBreakPoints,
-                    secondPlayerPoints: tennisMatchResponse.secondPlayerTieBreakPoints == null ? tennisMatchResponse.secondPlayerPoints : tennisMatchResponse.secondPlayerTieBreakPoints,
-            
-                    firstPlayerGames: tennisMatchResponse.firstPlayerGames,
-                    secondPlayerGames: tennisMatchResponse.secondPlayerGames,
-            
-                    firstPlayerSets: tennisMatchResponse.firstPlayerSets,
-                    secondPlayerSets: tennisMatchResponse.secondPlayerSets,
-            
-                    winnerName: tennisMatchResponse.winnerName
-                };
-            };
+const toMatchViewModel = (
+        tennisMatchResponse: types.TennisMatchResponse
+): types.MatchViewModel => {
+        return {
+                firstPlayerName: tennisMatchResponse.firstPlayerName,
+                secondPlayerName: tennisMatchResponse.secondPlayerName,
+
+                firstPlayerPoints: tennisMatchResponse.firstPlayerTieBreakPoints == null ? tennisMatchResponse.firstPlayerPoints : tennisMatchResponse.firstPlayerTieBreakPoints,
+                secondPlayerPoints: tennisMatchResponse.secondPlayerTieBreakPoints == null ? tennisMatchResponse.secondPlayerPoints : tennisMatchResponse.secondPlayerTieBreakPoints,
+
+                firstPlayerGames: tennisMatchResponse.firstPlayerGames,
+                secondPlayerGames: tennisMatchResponse.secondPlayerGames,
+
+                firstPlayerSets: tennisMatchResponse.firstPlayerSets,
+                secondPlayerSets: tennisMatchResponse.secondPlayerSets,
+
+                winnerName: tennisMatchResponse.winnerName
+        };
+};
 
 
-        const setEventListenersOnButtons = (uuid: string, firstPlayerName: string, secondPlayerName: string) => {
-                const firstPlayerScoreButton = document.getElementById('firstPlayerScoreButton') as HTMLElement;
-                const secondPlayerScoreButton = document.getElementById('secondPlayerScoreButton') as HTMLElement;
+const setEventListenersOnButtons = (uuid: string, firstPlayerName: string, secondPlayerName: string) => {
+        const firstPlayerScoreButton = document.getElementById('firstPlayerScoreButton') as HTMLElement;
+        const secondPlayerScoreButton = document.getElementById('secondPlayerScoreButton') as HTMLElement;
 
-                const firstPlayerAwardPoint = awardPoint(uuid, firstPlayerName);
-                const secondPlayerAwartPoint = awardPoint(uuid, secondPlayerName);
+        const handleFirstPlayerPoint = awardPoint(uuid, firstPlayerName);
+        const handleSecondPlayerPoint = awardPoint(uuid, secondPlayerName);
 
-                firstPlayerScoreButton.addEventListener("click", firstPlayerAwardPoint);
-                secondPlayerScoreButton.addEventListener("click", secondPlayerAwartPoint);
-        }
+        firstPlayerScoreButton.addEventListener("click", handleFirstPlayerPoint);
+        secondPlayerScoreButton.addEventListener("click", handleSecondPlayerPoint);
+}
 
-        const awardPoint = (uuid: string, winnerName: string) => {
-                return async function () {
-                        const error = document.getElementById('error') as HTMLElement;
-                        try {
-                                const tennisMatchResponse = await getUpdatedGeneralScore(uuid, winnerName);
-                                error.innerHTML = ``;
-                                renderGeneralScore(tennisMatchResponse);
-                                renderWinner(tennisMatchResponse);
-                        } catch (e) {
-                                renderError(e as any, error);
-                        }
-                }
-        }
+const awardPoint = (uuid: string, winnerName: string) => {
+        const error = document.getElementById('error') as HTMLElement;
 
-        const getUpdatedGeneralScore = async (uuid: string, winnerName: string): Promise<TennisMatchResponse> => {
+        return async function () {
                 const result = await sendRequestToGetUpdatedGeneralScore(uuid, winnerName);
+                error.innerHTML = ``;
 
-                const status: number = result.status;
-                const successStatus = Object.values(httpStatusCodes.SuccessStatus);
-
-                if (successStatus.includes(status)) {
-                        return await result.json();
+                if (httpStatusCodes.isSuccessfulRequest(result)) {
+                        const tennisMatchResponse = await result.json();
+                        renderGeneralScore(tennisMatchResponse);
+                        renderWinner(tennisMatchResponse);
                 } else {
                         const exceptionResponse: types.ExceptionResponse = await result.json();
-                        throw Error(exceptionResponse.message);
+                        renderError(exceptionResponse, error);
                 }
         }
+}
 
-        const sendRequestToGetUpdatedGeneralScore = async (uuid: string, winnerName: string): Promise<Response> => {
-                return fetch(`api/matches/${uuid}/point`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                                name: winnerName
-                        })
-                });
+const sendRequestToGetUpdatedGeneralScore = async (uuid: string, winnerName: string): Promise<Response> => {
+        return fetch(`api/matches/${uuid}/point`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                        name: winnerName
+                })
+        });
+}
+
+const renderGeneralScore = (tennisMatchResponse: types.TennisMatchResponse) => {
+        const matchViewModel: types.MatchViewModel = toMatchViewModel(tennisMatchResponse);
+
+        renderGeneralScoreUnit(matchViewModel.firstPlayerPoints, "firstPlayerPoints");
+        renderGeneralScoreUnit(matchViewModel.firstPlayerGames, "firstPlayerGames");
+        renderGeneralScoreUnit(matchViewModel.firstPlayerSets, "firstPlayerSets");
+
+        renderGeneralScoreUnit(matchViewModel.secondPlayerPoints, "secondPlayerPoints");
+        renderGeneralScoreUnit(matchViewModel.secondPlayerGames, "secondPlayerGames");
+        renderGeneralScoreUnit(matchViewModel.secondPlayerSets, "secondPlayerSets");
+
+}
+
+const renderGeneralScoreUnit = (number: string | number, elementName: string) => {
+        const element = document.getElementById(elementName) as HTMLElement;
+        element.innerText = number + "";
+}
+
+const renderWinner = (tennisMatchResponse: types.TennisMatchResponse) => {
+        const winnerElement = document.getElementById("winner") as HTMLElement;
+        const winnerName: string = tennisMatchResponse.winnerName;
+
+        if (winnerName != null) {
+                winnerElement.innerHTML = `<p>WINNER: ${winnerName} </p>`
         }
+}
 
-        const renderGeneralScore = (tennisMatchResponse: TennisMatchResponse) => {
-                const matchViewModel: types.MatchViewModel = toMatchViewModel(tennisMatchResponse);
+const renderInitialError = (message: string) => {
+        const container = document.getElementById('container') as HTMLElement;
 
-                renderGeneralScoreUnit(matchViewModel.firstPlayerPoints, "firstPlayerPoints");
-                renderGeneralScoreUnit(matchViewModel.firstPlayerGames, "firstPlayerGames");
-                renderGeneralScoreUnit(matchViewModel.firstPlayerSets, "firstPlayerSets");
-
-                renderGeneralScoreUnit(matchViewModel.secondPlayerPoints, "secondPlayerPoints");
-                renderGeneralScoreUnit(matchViewModel.secondPlayerGames, "secondPlayerGames");
-                renderGeneralScoreUnit(matchViewModel.secondPlayerSets, "secondPlayerSets");
-
-        }
-
-        const renderGeneralScoreUnit = (number: string | number, elementName: string) => {
-                const element = document.getElementById(elementName) as HTMLElement;
-                element.innerText = number + "";
-        }
-
-        const renderWinner = (tennisMatchResponse: TennisMatchResponse) => {
-                const winnerName: string = tennisMatchResponse.winnerName;
-
-                if (winnerName != null) {
-                        const winnerElement = document.getElementById("winner") as HTMLElement;
-                        winnerElement.innerHTML = `<p>WINNER: ${winnerName} </p>`
-                }
-        }
-
-        const renderError = (e: any, error: HTMLElement) => {
-                error.innerHTML = `<p>${e.message}</p>`;
-        }
-
-
-        const renderInitialError = (message: string) => {
-                return `
+        const initialErrorHTML = `
                         <div class="currentMatchHeader centered errorText">
                                 <h1>${message}</h1>
                         </div>`
-        }
-
-        document.addEventListener("DOMContentLoaded", startMatch);
+        container.innerHTML = initialErrorHTML;
 }
+
+const renderError = (exceptionResponse: types.ExceptionResponse, error: HTMLElement) => {
+        error.innerHTML = `<p>${exceptionResponse.message}</p>`;
+}
+
+document.addEventListener("DOMContentLoaded", startMatch);

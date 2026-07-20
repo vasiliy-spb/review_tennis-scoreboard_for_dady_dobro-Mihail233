@@ -29,14 +29,14 @@ public class FinishedMatchesFindingService {
     private final MatchMapper matchMapper;
 
 
-    public FinishedMatchesResponse findAllFinishedMatches(String pageFromUser) {
+    public FinishedMatchesResponse findFinishedMatches(String pageFromUser) {
         int matchCount = extendedDAO.countAllMatches();
         FinderRecords finderRecords = extendedDAO::find;
 
         return findBatchOfFinishedMatches(matchCount, pageFromUser, finderRecords);
     }
 
-    public FinishedMatchesResponse findAllFinishedMatchesCertainPlayer(String playerName, String pageFromUser) {
+    public FinishedMatchesResponse findFinishedMatchesByPlayer(String playerName, String pageFromUser) {
         int recordCount = extendedDAO.countAllMatchesByPlayerName(playerName);
         FinderRecords finderAllRecordsOneOfPlayer = (offset) -> extendedDAO.findMatchesByNameAndPage(playerName, offset);
 

@@ -1,7 +1,6 @@
-import * as dto from "./types.js";
+import * as types from "./types.js";
 import * as httpStatusCodes from "./httpStatusCodes.js";
 
-const newMatchRegistrationForm = document.getElementById('newMatchRegistrationForm') as HTMLFormElement;
 
 const registerMatch = async (e: any) => {
     e.preventDefault();
@@ -9,12 +8,12 @@ const registerMatch = async (e: any) => {
     const [firstPlayerName, secondPlayerName] = getPlayerNamesFromForm();
     const result: Response = await sendRequestToRegisterMatch(firstPlayerName, secondPlayerName);
 
-    if (isSuccessfulRequest(result)) {
-        const registeredMatchResponse: dto.RegisteredMatchResponse = await result.json();
+    if (httpStatusCodes.isSuccessfulRequest(result)) {
+        const registeredMatchResponse: types.RegisteredMatchResponse = await result.json();
         makeRedirect(registeredMatchResponse.id);
     } else {
-        const exceptionResponse: dto.ExceptionResponse = await result.json();
-        printError(exceptionResponse);
+        const exceptionResponse: types.ExceptionResponse = await result.json();
+        renderError(exceptionResponse);
     }
 }
 
@@ -38,20 +37,15 @@ const sendRequestToRegisterMatch = async (firstPlayerName: string, secondPlayerN
     });
 }
 
-const isSuccessfulRequest = (result: Response) => {
-    const status: number = result.status;
-    const successStatus = Object.values(httpStatusCodes.SuccessStatus);
-    return successStatus.includes(status);
-}
-
 const makeRedirect = (id: String) => {
     //не нравится .html
     document.location.href = `../match-score.html?uuid=${id}`;
 }
 
-const printError = (exceptionResponse: dto.ExceptionResponse) => {
+const renderError = (exceptionResponse: types.ExceptionResponse) => {
     const error = document.getElementById('error') as HTMLElement;
     error.innerHTML = `<p>${exceptionResponse.message}</p>`;
 }
 
+const newMatchRegistrationForm = document.getElementById('newMatchRegistrationForm') as HTMLFormElement;
 newMatchRegistrationForm.addEventListener('submit', registerMatch);

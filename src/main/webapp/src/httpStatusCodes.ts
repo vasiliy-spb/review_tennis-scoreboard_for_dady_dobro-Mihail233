@@ -1,3 +1,9 @@
+export const isSuccessfulRequest = (result: Response) => {
+    const status: number = result.status;
+    const successStatus = Object.values(SuccessStatus);
+    return successStatus.includes(status);
+}
+
 export enum InformationalStatus {
     Continue = 100,
     SwitchingProtocols = 101,

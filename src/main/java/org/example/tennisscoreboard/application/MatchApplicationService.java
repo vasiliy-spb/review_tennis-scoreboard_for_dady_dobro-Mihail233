@@ -47,9 +47,9 @@ public class MatchApplicationService {
 
     public FinishedMatchesResponse getFinishedMatches(String pageFromUser, String playerName) {
         if (playerName == null) {
-            return finishedMatchesFindingService.findAllFinishedMatches(pageFromUser);
+            return finishedMatchesFindingService.findFinishedMatches(pageFromUser);
         } else {
-            return finishedMatchesFindingService.findAllFinishedMatchesCertainPlayer(playerName, pageFromUser);
+            return finishedMatchesFindingService.findFinishedMatchesByPlayer(playerName, pageFromUser);
         }
     }
 }

@@ -20,13 +20,13 @@ export interface TennisMatchResponse {
     winnerName: string
 }
 
-export interface FinishedMatchesResponseDTO {
-    lastPage: boolean;
-    pageNumber: string;
-    matches: MatchDTO[];
+export interface FinishedMatchesResponse {
+    matches: MatchResponse[];
+    currentPage: number;
+    totalPages: number;
 }
 
-export interface MatchDTO {
+export interface MatchResponse {
     firstPlayerName: string,
     secondPlayerName: string,
     winnerName: string;
