@@ -10,6 +10,9 @@ import java.util.Objects;
 import static org.example.tennisscoreboard.domain.model.Point.LOVE;
 
 public class Game {
+    private static final int MIN_GAMES = 0;
+    private static final int MAX_GAMES = 7;
+
     public static final Integer MINIMUM_GAMES_IN_SET = 6;
     public static final Integer MINIMUM_POINT_MARGIN_IN_TIEBREAK = 2;
 
@@ -25,14 +28,27 @@ public class Game {
         initGames(firstParticipantName, firstParticipantGames, secondParticipantName, secondParticipantGames);
     }
 
-    private void initGames(String firstParticipantName, int firstParticipantPoints, String secondParticipantName, int secondParticipantPoints) {
+    private void initGames(String firstParticipantName, int firstParticipantGames, String secondParticipantName, int secondParticipantGames) {
         games = new HashMap<>();
-        games.put(firstParticipantName, firstParticipantPoints);
-        games.put(secondParticipantName, secondParticipantPoints);
+        games.put(firstParticipantName, firstParticipantGames);
+        games.put(secondParticipantName, secondParticipantGames);
     }
 
     protected static Game createGame(String firstParticipantName, String secondParticipantName) {
         return new Game(firstParticipantName, INITIAL_GAMES, secondParticipantName, INITIAL_GAMES);
+    }
+
+    protected static Game createCustomGame(String firstParticipantName, int firstParticipantGames, String secondParticipantName,
+                                           int secondParticipantGames) {
+        validateGames(firstParticipantGames);
+        validateGames(secondParticipantGames);
+        return new Game(firstParticipantName, firstParticipantGames, secondParticipantName, secondParticipantGames);
+    }
+
+    private static void validateGames(int games) {
+        if (games > MAX_GAMES || games < MIN_GAMES) {
+            throw new IllegalArgumentException("Invalid games");
+        }
     }
 
     protected boolean isTiebreak() {

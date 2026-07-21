@@ -2,9 +2,7 @@ package org.example.tennisscoreboard.domain.model;
 
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Point {
     private static final int INITIAL_POINTS = 0;
@@ -14,6 +12,8 @@ public class Point {
     public static final int ONE_POINT = 15;
     public static final int TWO_POINT = 30;
     public static final int THREE_POINT = 40;
+
+    private static final ArrayList<Integer> ENABLE_POINT = new ArrayList<>(List.of(AD, LOVE, ONE_POINT, TWO_POINT, THREE_POINT));
 
     @Getter
     private Map<String, Integer> points;
@@ -33,6 +33,21 @@ public class Point {
 
     protected static Point createPoint(String firstParticipantName, String secondParticipantName) {
         return new Point(firstParticipantName, INITIAL_POINTS, secondParticipantName, INITIAL_POINTS);
+    }
+
+    protected static Point createCustomPoint(String firstParticipantName, int firstParticipantPoints, String secondParticipantName,
+                                             int secondParticipantPoints) {
+
+        validatePoints(firstParticipantPoints);
+        validatePoints(secondParticipantPoints);
+        return new Point(firstParticipantName, firstParticipantPoints, secondParticipantName, secondParticipantPoints);
+    }
+
+    private static void validatePoints(int points) {
+
+        if (!ENABLE_POINT.contains(points)) {
+            throw new IllegalArgumentException("Invalid points");
+        }
     }
 
     protected void updatePointInStandardGame(String name) {

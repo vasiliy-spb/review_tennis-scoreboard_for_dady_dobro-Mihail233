@@ -36,6 +36,35 @@ public class Score {
         );
     }
 
+    protected static Score createCustomScoreWithTiebreak(String firstParticipantName, String secondParticipantName,
+                                                            int firstParticipantPoints, int secondParticipantPoints,
+                                                            int firstParticipantGames, int secondParticipantGames,
+                                                            int firstParticipantSets, int secondParticipantSets,
+                                                            int firstParticipantTiebreakPoints, int secondParticipantTiebreakPoints
+    ) {
+        return new Score(
+                Point.createCustomPoint(firstParticipantName, firstParticipantPoints, secondParticipantName, secondParticipantPoints),
+                Game.createCustomGame(firstParticipantName, firstParticipantGames, secondParticipantName, secondParticipantGames),
+                Set.createCustomSet(firstParticipantName, firstParticipantSets, secondParticipantName, secondParticipantSets),
+                Tiebreak.createCustomTiebreak(firstParticipantName,firstParticipantTiebreakPoints, secondParticipantName, secondParticipantTiebreakPoints)
+        );
+    }
+
+
+    protected static Score createCustomScoreWithoutTiebreak(String firstParticipantName, String secondParticipantName,
+                                                            int firstParticipantPoints, int secondParticipantPoints,
+                                                            int firstParticipantGames, int secondParticipantGames,
+                                                            int firstParticipantSets, int secondParticipantSets) {
+        return new Score(
+                Point.createCustomPoint(firstParticipantName, firstParticipantPoints, secondParticipantName, secondParticipantPoints),
+                Game.createCustomGame(firstParticipantName, firstParticipantGames, secondParticipantName, secondParticipantGames),
+                Set.createCustomSet(firstParticipantName, firstParticipantSets, secondParticipantName, secondParticipantSets),
+                Tiebreak.createTiebreak(firstParticipantName, secondParticipantName)
+        );
+    }
+
+
+
     protected void awardPointByName(String name) {
         if (game.isTiebreak()) {
             tiebreakPoint.updatePointInTiebreak(name);

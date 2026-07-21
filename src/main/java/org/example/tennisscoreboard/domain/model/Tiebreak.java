@@ -10,7 +10,8 @@ import java.util.Objects;
 import static org.example.tennisscoreboard.domain.model.Game.MINIMUM_POINT_MARGIN_IN_TIEBREAK;
 
 public class Tiebreak {
-    private final static int INITIAL_TIEBREAK_POINTS = 0;
+    private static final int MIN_POINTS = 0;
+    private static final int INITIAL_TIEBREAK_POINTS = 0;
     private static final Integer MINIMUM_POINTS_IN_TIEBREAK = 7;
 
     @Getter
@@ -30,6 +31,18 @@ public class Tiebreak {
 
     protected static Tiebreak createTiebreak(String firstParticipantName, String secondParticipantName) {
         return new Tiebreak(firstParticipantName, null, secondParticipantName, null);
+    }
+
+    protected static Tiebreak createCustomTiebreak(String firstParticipantName, Integer firstParticipantPoints, String secondParticipantName, Integer secondParticipantPoints) {
+        validateTiebreak(firstParticipantPoints);
+        validateTiebreak(secondParticipantPoints);
+        return new Tiebreak(firstParticipantName, firstParticipantPoints, secondParticipantName, secondParticipantPoints);
+    }
+
+    private static void validateTiebreak(int points) {
+        if (points < MIN_POINTS) {
+            throw new IllegalArgumentException("Invalid tiebreak points");
+        }
     }
 
     protected void updatePointInTiebreak(String name) {
