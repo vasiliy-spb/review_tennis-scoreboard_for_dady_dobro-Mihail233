@@ -1,8 +1,8 @@
 package org.example.tennisscoreboard.application;
 
 import lombok.RequiredArgsConstructor;
+import org.example.tennisscoreboard.domain.model.TennisMatch;
 import org.example.tennisscoreboard.domain.model.Participants;
-import org.example.tennisscoreboard.domain.model.score.TennisMatch;
 import org.example.tennisscoreboard.domain.service.OngoingMatchesDomainService;
 import org.example.tennisscoreboard.dto.*;
 import org.example.tennisscoreboard.mapper.TennisMatchMapper;

@@ -5,12 +5,12 @@ public record TennisMatchResponse (
         String secondPlayerName,
         String firstPlayerPoints,
         String secondPlayerPoints,
-        String firstPlayerGames,
-        String secondPlayerGames,
-        String firstPlayerSets,
-        String secondPlayerSets,
-        String firstPlayerTieBreakPoints,
-        String secondPlayerTieBreakPoints,
+        Integer firstPlayerGames,
+        Integer secondPlayerGames,
+        Integer firstPlayerSets,
+        Integer secondPlayerSets,
+        Integer firstPlayerTieBreakPoints,
+        Integer secondPlayerTieBreakPoints,
         String winnerName
 ) {
 }

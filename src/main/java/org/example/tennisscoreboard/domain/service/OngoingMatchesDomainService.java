@@ -1,7 +1,7 @@
 package org.example.tennisscoreboard.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.tennisscoreboard.domain.model.score.TennisMatch;
+import org.example.tennisscoreboard.domain.model.TennisMatch;
 import org.example.tennisscoreboard.exception.OngoingMatchNotFoundException;
 
 import java.util.Map;
