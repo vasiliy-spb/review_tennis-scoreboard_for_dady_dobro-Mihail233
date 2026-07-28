@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class FinishedMatchController {
     private final MatchApplicationService matchApplicationService;
 
+    // String pageFromUser стоит сделать int
+    // Можно использовать Spring Data JPA (spring-data-jpa). Это позволит использовать удобный интерфейс Pageable.
     @GetMapping("/matches")
     public ResponseEntity<FinishedMatchesResponse> getFinishedMatches(@RequestParam(required = false, value = "page") String pageFromUser, @RequestParam(required = false, value = "player_name") String playerName) {
         FinishedMatchesResponse finishedMatchesResponse = matchApplicationService.getFinishedMatches(pageFromUser, playerName);

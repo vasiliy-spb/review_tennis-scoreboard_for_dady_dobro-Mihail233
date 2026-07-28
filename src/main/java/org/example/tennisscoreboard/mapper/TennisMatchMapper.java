@@ -5,8 +5,12 @@ import org.example.tennisscoreboard.dto.TennisMatchResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring") // Для "spring" в mapstruct есть специальная константа: MappingConstants.ComponentModel.SPRING
 public interface TennisMatchMapper {
+
+    // Можно назвать ModelDtoMatchMapper
+
+    // Многие методы дублируются для каждого игрока. Стоит поискать решение, как избавиться от такого дублирования.
 
     @Mapping(target = "firstPlayerName", expression = "java(mapFirstPlayerName(tennisMatch))")
     @Mapping(target = "secondPlayerName", expression = "java(mapSecondPlayerName(tennisMatch))")

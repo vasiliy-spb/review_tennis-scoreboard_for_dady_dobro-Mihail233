@@ -15,12 +15,14 @@
     <maven.compiler.target>25</maven.compiler.target>
     <maven.compiler.source>25</maven.compiler.source>
 
+    <!-- Как и из кода, комментарии из файлов конфигурации стоит удалять перед коммитом -->
     <!--    <spring.version>5.3.29</spring.version>-->
     <spring.version>7.0.7</spring.version>
 
     <junit.version>5.13.2</junit.version>
     <hibenate.vesrion>6.4.10.Final</hibenate.vesrion>
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+    <!-- Версии других зависимостей (особенно повторяющиеся) тоже лучше вынести в properties -->
   </properties>
 
   <dependencies>
@@ -57,6 +59,8 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+
+      <!-- В зависимостях этой версии обнаружены уязвимости — стоит использовать более свежую версию -->
       <version>2.21.0</version>
       <scope>compile</scope>
     </dependency>

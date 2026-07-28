@@ -14,10 +14,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class FinishedMatchesPersistenceService {
+
+    // TODO: Нет интерфейса для этого класса. (см. файл "service.md" в этом же пакете)
+
     private final ExtendedDAO<Match, List<Match>> extendedDAO;
     private final DAO<Player, Player> dao;
 
     public void addFinishedMatch(TennisMatch tennisMatch) {
+
+        // TODO: Этот метод (и класс) не должны ничего знать о бизнес-логике (что сохраняются только завершённые матчи).
+            // Его задача — просто работать с репозиторием и сохранять матч без дополнительных условий.
         if (tennisMatch.getWinner() != null) {
             Participants participants = tennisMatch.getParticipants();
 

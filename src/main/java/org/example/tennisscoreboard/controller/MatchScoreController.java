@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class MatchScoreController {
     private final MatchApplicationService matchApplicationService;
 
+    // В проекте есть TennisScoreboardExceptionHandler, поэтому стоит убрать BindingResult из аргументов и обрабатывать ошибки валидации в хендлере
+    // Можно назвать просто awardPoint
     @PostMapping("/matches/{uuid}/point")
     public ResponseEntity<TennisMatchResponse> awardPointAndGetGeneralScore(@PathVariable("uuid") String uuid, @RequestBody @Valid PointAwardingRequest pointAwardingRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

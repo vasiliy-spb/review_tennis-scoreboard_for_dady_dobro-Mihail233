@@ -15,6 +15,11 @@ import java.util.Properties;
 @PropertySource("classpath:/application.properties")
 public class DatabaseConfig {
 
+    // При использовании setDataSourceClassName() все специфичные для драйвера свойства (такие как url, user, password) должны быть переданы через addDataSourceProperty()
+        // https://deepwiki.com/brettwooldridge/HikariCP/4-configuration#datasource-properties
+        // Или можно использовать setDriverClassName (JDBC-драйвер).
+
+    // TODO: В свойстве db.driver и поле databaseDriver лежит datasource.
     @Value("${db.driver}")
     private String databaseDriver;
 
@@ -42,7 +47,7 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDataSourceClassName(databaseDriver);
+        hikariConfig.setDataSourceClassName(databaseDriver); // TODO: Драйвер устанавливается так: hikariConfig.setDriverClassName(databaseDriver);
         hikariConfig.setJdbcUrl(databaseUrl);
         hikariConfig.setUsername(databaseUsername);
         hikariConfig.setPassword(databasePassword);
@@ -51,11 +56,12 @@ public class DatabaseConfig {
         return new HikariDataSource(hikariConfig);
     }
 
+    // Можно перейти на LocalContainerEntityManagerFactoryBean
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(dataSource);
-        localSessionFactoryBean.setPackagesToScan("org/example/tennisscoreboard/entity");
+        localSessionFactoryBean.setPackagesToScan("org/example/tennisscoreboard/entity"); // В качестве разделителя для пути обычно используется точка
         localSessionFactoryBean.setHibernateProperties(getHibernateProperties());
         return localSessionFactoryBean;
     }
