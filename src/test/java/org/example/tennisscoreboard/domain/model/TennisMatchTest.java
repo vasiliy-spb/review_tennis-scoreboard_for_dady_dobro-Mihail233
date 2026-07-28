@@ -12,6 +12,14 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class TennisMatchTest {
+
+    // Как и в основном коде, в тестах тоже стоит избегать длинных цепочек вызовов.
+        // Строки вроде: tennisMatch.getScore().getTiebreakPoint().getTiebreakPoints() снижают читаемость кода.
+
+    // TODO: Каждая доменная модель должны иметь собственные юнит-тесты, где проверяется вся их логика изолированно.
+
+    // TODO: Методы, приводящие матч в нужное только для тестов состояние должны находиться в тестах, а не в доменном слое.
+
     private static final String FIRST_PARTICIPANT_NAME = "badBoy52";
     private static final String SECOND_PARTICIPANT_NAME = "goodGirl67";
 

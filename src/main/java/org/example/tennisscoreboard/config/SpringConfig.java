@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan("org.example.tennisscoreboard")
 public class SpringConfig implements WebMvcConfigurer {
 
+    // В Spring обычно @Bean-методы объявляются как public
+    // Вместо ручного создания бина можно использовать аннотацию @Component или @Service над OngoingMatchesDomainService
     @Bean
     OngoingMatchesDomainService createOngoingMatchesDomainService() {
         return new OngoingMatchesDomainService();

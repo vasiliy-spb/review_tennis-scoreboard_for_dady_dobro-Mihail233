@@ -17,14 +17,26 @@ public class TennisMatch {
     @Getter
     private Score score;
 
+    // TODO: Хранение поля Participant winner вынуждает следить не только за состоянием счёта, но и за этим полем.
+        // Это нарушает Принцип Единого источника истины (см. файл "ssot-principle.md" в этом же пакете).
+        // Победителя в матче можно вычислять по счёту.
+    // Вместо простого геттера и метода void findWinner() лучше иметь метод Optional<Participant> getWinner(),
+        // который никогда не вернёт null и будет вычислять победителя "на лету".
     @Getter
     private Participant winner;
 
+    // Если в классе есть хоть один конструктор, то конструктор по умолчанию
+        // (публичный конструктор без аргументов) создан не будет,
+        // поэтому не нужно объявлять его как private.
     private TennisMatch() {
     }
 
     private TennisMatch(Participants participants, Score score) {
+
+        // Стоит удалять закомментированный код перед тем, как выполнять коммит
         //this.uuid = UUID.fromString("f609a413-255a-4eae-925a-dedddd67e470");
+
+        // Матч не должен сам генерировать свой ID — это ответственность класса, который его создаёт или сохраняет в БД/хранилище.
         this.uuid = UUID.randomUUID();
         this.participants = participants;
         this.score = score;
@@ -38,6 +50,9 @@ public class TennisMatch {
         return new TennisMatch(participants, score);
     }
 
+    // Удобство использования в тестах не является достаточной причиной для того, чтобы создавать такие методы.
+        // Тесты должны писаться для существующего кода и подстраиваться под него, а не наоборот.
+        // Этот метод стоит удалить.
     public static TennisMatch createCustomMatchWithTiebreak(Participants participants,
                                                             int firstParticipantPoints, int secondParticipantPoints,
                                                             int firstParticipantGames, int secondParticipantGames,
@@ -56,6 +71,9 @@ public class TennisMatch {
         return new TennisMatch(participants, score);
     }
 
+    // Удобство использования в тестах не является достаточной причиной для того, чтобы создавать такие методы.
+        // Тесты должны писаться для существующего кода и подстраиваться под него, а не наоборот.
+        // Этот метод стоит удалить.
     public static TennisMatch createCustomMatchWithoutTiebreak(Participants participants,
                                                                int firstParticipantPoints, int secondParticipantPoints,
                                                                int firstParticipantGames, int secondParticipantGames,
@@ -73,7 +91,18 @@ public class TennisMatch {
         return new TennisMatch(participants, score);
     }
 
+    // Лучше назвать pointWonBy(name)
+    // Здесь аргумент метода назван winnerName, а в других классах просто name — лучше придерживаться единообразия
+    // TODO: Определение победителя в этом методе является "побочным эффектом".
+        // Ничто не мешает в уже завершённом матче вызвать несколько раз метод awardPoint для проигравшего
+        // и тем самым изменить победителя.
+        // Метод findWinner() (который после рефакторинга преобразуется в Optional<Participant> getWinner())
+        // должен запускаться отдельно.
     public void awardPoint(String winnerName) {
+        // TODO: Нет проверки на то, что матч не завершён.
+            // Попытка начислить очко в уже завершённом матче — это не нормальная ситуация и
+            // должна приводить к исключению.
+
         score.awardPointByName(winnerName);
         findWinner();
     }

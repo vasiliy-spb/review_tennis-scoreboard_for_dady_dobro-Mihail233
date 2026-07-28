@@ -40,6 +40,6 @@ public class TennisScoreboardExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ExceptionResponse handleUnexpected(Exception e) {
-        return new ExceptionResponse("Internal server error");
+        return new ExceptionResponse("Internal server error"); // Можно использовать HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()
     }
 }

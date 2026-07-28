@@ -5,5 +5,8 @@ import org.example.tennisscoreboard.entity.Match;
 import java.util.List;
 
 public interface FinderRecords {
-    List<Match> find(String indexOfPage);
+
+    // Можно назвать AllFinder
+
+    List<Match> find(String indexOfPage); // Из сигнатуры метода не понятно, что за параметр он принимает
 }

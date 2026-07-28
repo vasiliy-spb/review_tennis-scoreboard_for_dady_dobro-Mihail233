@@ -4,6 +4,14 @@ import lombok.Getter;
 
 public class Score {
 
+    // TODO: Класс нарушает Принцип единой ответственности (SRP) и
+        // забирает часть логики у каждого нижестоящего класса модели.
+        // А также он предоставляет статические методы для создания
+        // объектов с предустановленными параметрами для тестов.
+        // За логику обработки счёта должны отвечать сами матч-сет-гейм:
+            // - Матч запускает обработку очка у сета и если тот завершён, увеличивает счёт у себя
+            // - Сет запускает обработку очка у гейма/тай-брейка и если тот завершён, увеличивает счёт у себя
+        // Класс не имеет самостоятельной логики и оправданного назначения, поэтому не должен существовать.
 
     @Getter
     private Point point;
@@ -17,6 +25,9 @@ public class Score {
     @Getter
     private Tiebreak tiebreakPoint;
 
+    // Если в классе есть хоть один конструктор, то конструктор по умолчанию
+        // (публичный конструктор без аргументов) создан не будет,
+        // поэтому не нужно объявлять его как private.
     private Score() {
     }
 
@@ -36,6 +47,9 @@ public class Score {
         );
     }
 
+    // Удобство использования в тестах не является достаточной причиной для того, чтобы создавать такие методы.
+        // Тесты должны писаться для существующего кода и подстраиваться под него, а не наоборот.
+        // Этот метод стоит удалить.
     protected static Score createCustomScoreWithTiebreak(String firstParticipantName, String secondParticipantName,
                                                             int firstParticipantPoints, int secondParticipantPoints,
                                                             int firstParticipantGames, int secondParticipantGames,
@@ -50,7 +64,9 @@ public class Score {
         );
     }
 
-
+    // Удобство использования в тестах не является достаточной причиной для того, чтобы создавать такие методы.
+        // Тесты должны писаться для существующего кода и подстраиваться под него, а не наоборот.
+        // Этот метод стоит удалить.
     protected static Score createCustomScoreWithoutTiebreak(String firstParticipantName, String secondParticipantName,
                                                             int firstParticipantPoints, int secondParticipantPoints,
                                                             int firstParticipantGames, int secondParticipantGames,
